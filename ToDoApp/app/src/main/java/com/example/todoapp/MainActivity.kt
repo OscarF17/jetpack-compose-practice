@@ -1,6 +1,7 @@
 package com.example.todoapp
 
 import android.os.Bundle
+import android.view.RoundedCorner
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -9,14 +10,17 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -41,6 +45,7 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.layout.ModifierInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -151,6 +156,7 @@ class MainActivity : ComponentActivity() {
                         }
                         Row(
                             horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically,
                             // Arrangement doesn't work if row doesn't take up whole width
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -174,15 +180,17 @@ class MainActivity : ComponentActivity() {
                                     false
                                 }
                             )
+                            Spacer(modifier = Modifier.width(10.dp))
                                Button(
                                    colors = buttonColors(containerColor = RedBrand),
-                                onClick = {
-                                    if(textBox != ""){
-                                        todoItems[nextId] = TodoItem(id = nextId, text = textBox)
-                                        nextId++
-                                        textBox = ""
-                                    }
-                                }) {
+                                   onClick = {
+                                       if(textBox != ""){
+                                           todoItems[nextId] = TodoItem(id = nextId, text = textBox)
+                                           nextId++
+                                           textBox = ""
+                                       }
+                                    },
+                                ){
                                 Text(
                                     text = "Click me",
                                 )
