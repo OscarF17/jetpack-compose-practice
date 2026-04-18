@@ -1,6 +1,5 @@
 package com.example.todoapp
 
-import android.R
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
@@ -47,6 +44,7 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todoapp.ui.theme.RedBrand
 import com.example.todoapp.ui.theme.ToDoAppTheme
 
 data class TodoItem(
@@ -82,7 +80,7 @@ class MainActivity : ComponentActivity() {
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 40.sp
                                 )},
-                            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Red),
+                             colors = TopAppBarDefaults.topAppBarColors(containerColor = RedBrand),
                             modifier = Modifier.height(80.dp)
                         )
                     },
@@ -176,8 +174,8 @@ class MainActivity : ComponentActivity() {
                                     false
                                 }
                             )
-                            Button(
-                                colors = buttonColors(containerColor = Color.Red),
+                               Button(
+                                   colors = buttonColors(containerColor = RedBrand),
                                 onClick = {
                                     if(textBox != ""){
                                         todoItems[nextId] = TodoItem(id = nextId, text = textBox)
