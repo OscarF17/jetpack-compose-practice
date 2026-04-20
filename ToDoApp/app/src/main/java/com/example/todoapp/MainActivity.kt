@@ -6,23 +6,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
@@ -35,16 +29,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.todoapp.components.AlertDialogPopUp
+import com.example.todoapp.components.InputRow
 import com.example.todoapp.components.TopBar
-import com.example.todoapp.ui.theme.RedBrand
 import com.example.todoapp.ui.theme.ToDoAppTheme
 
 data class TodoItem(
@@ -162,48 +151,17 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                            // Arrangement doesn't work if row doesn't take up whole width
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 5.dp, start = 10.dp, end = 10.dp)
-                        ){
-                            OutlinedTextField(
-                                value = textBox,
-                                onValueChange = { newVal ->
-                                    textBox = newVal
-                                },
-                                placeholder = { Text(text = "Write something...") },
-                                singleLine = true,
-                                modifier = Modifier.onKeyEvent { event ->
-                                    if(event.key == Key.Enter && event.type == KeyEventType.KeyDown && textBox != "") {
-                                        todoItems[nextId] = TodoItem(id = nextId, text = textBox)
-
-                                        nextId++
-                                        textBox = ""
-                                        true
-                                    }
-                                    false
-                                }
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                               Button(
-                                   colors = buttonColors(containerColor = RedBrand),
-                                   onClick = {
-                                       if(textBox != ""){
-                                           todoItems[nextId] = TodoItem(id = nextId, text = textBox)
-                                           nextId++
-                                           textBox = ""
-                                       }
-                                    },
-                                ){
-                                Text(
-                                    text = "Click me",
-                                )
+                        InputRow(
+                            textBox = textBox,
+                            addElement = {
+                                todoItems[nextId] = TodoItem(id = nextId, text = textBox)
+                                nextId++
+                                textBox = ""
+                            },
+                            updateTextBox = { newVal ->
+                                textBox = newVal
                             }
-                        }
+                        )
                     }
                 }
             }
