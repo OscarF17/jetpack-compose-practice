@@ -19,19 +19,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,6 +46,7 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todoapp.components.AlertDialogPopUp
 import com.example.todoapp.ui.theme.RedBrand
 import com.example.todoapp.ui.theme.ToDoAppTheme
 
@@ -92,6 +88,7 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     modifier = Modifier.fillMaxSize()) { innerPadding ->
+
                     val x = 40
                     var textBox by remember { mutableStateOf<String>("") }
                     val todoItems = remember { mutableStateMapOf<Int, TodoItem>().apply {
@@ -99,8 +96,9 @@ class MainActivity : ComponentActivity() {
                             put(i, TodoItem(id = i, text = i.toString(), state = false))
                         }
                     } }
-                    var isInitialized by remember { mutableStateOf(false) }
                     var nextId by remember { mutableIntStateOf(todoItems.size + 1) }
+
+                    var isInitialized by remember { mutableStateOf(false) }
                     val listState = rememberLazyListState()
                     LaunchedEffect(todoItems.size) {
                         if(isInitialized && todoItems.isNotEmpty()) {
@@ -108,30 +106,24 @@ class MainActivity : ComponentActivity() {
                         }
                         isInitialized = true
                     }
+
                     var showDialog by remember { mutableStateOf(false) }
                     var selectedEntry by remember { mutableIntStateOf(-1) }
+
                     if(showDialog) {
-                        AlertDialog(
-                            onDismissRequest = {},
-                            title = {Text(text = "Delete entry?", fontWeight = FontWeight.Bold)},
-                            text = {Text("Deleted entries cannot be recovered.")},
-                            confirmButton = {
-                                TextButton(
-                                    onClick = {
-                                        todoItems.remove(selectedEntry)
-                                        showDialog = false
-                                        isInitialized = false
-                                    },
-                                ) {
-                                    Text(text = "Execute", color = RedBrand)
-                                }
+                        AlertDialogPopUp(
+                            title = "Delete entry?",
+                            text = "Deleted entries cannot be recovered.",
+                            onConfirm= {
+                              todoItems.remove(selectedEntry)
+                              showDialog = false
+                              isInitialized = false
                             },
-                            dismissButton = {
-                                TextButton(onClick = {showDialog = false}) {
-                                    Text(text = "Close", color = Color.DarkGray)
-                                }
+                            confirmButtonText = "Delete",
+                            onDismiss = {
+                                showDialog = false
                             },
-                            icon = { Icon(imageVector = Icons.Default.Info, contentDescription = null) }
+                            dismissButtonText = "Cancel"
                         )
                     }
                     Column(
