@@ -18,6 +18,7 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.TodoItem
 import com.example.todoapp.ui.theme.RedBrand
@@ -62,8 +63,18 @@ fun InputRow(
             },
         ){
             Text(
-                text = "Click me",
+                text = "Add",
             )
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun InputRowPreview() {
+    InputRow(
+        textBox = "Hello",
+        addElement = {},
+        updateTextBox = {}
+    )
 }
