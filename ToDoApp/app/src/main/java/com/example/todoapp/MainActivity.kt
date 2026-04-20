@@ -1,7 +1,6 @@
 package com.example.todoapp
 
 import android.os.Bundle
-import android.view.RoundedCorner
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,15 +19,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,7 +48,6 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.layout.ModifierInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -106,6 +108,32 @@ class MainActivity : ComponentActivity() {
                         }
                         isInitialized = true
                     }
+                    var showDialog by remember { mutableStateOf(false) }
+                    var selectedEntry by remember { mutableIntStateOf(-1) }
+                    if(showDialog) {
+                        AlertDialog(
+                            onDismissRequest = {},
+                            title = {Text(text = "Delete entry?", fontWeight = FontWeight.Bold)},
+                            text = {Text("Deleted entries cannot be recovered.")},
+                            confirmButton = {
+                                TextButton(
+                                    onClick = {
+                                        todoItems.remove(selectedEntry)
+                                        showDialog = false
+                                        isInitialized = false
+                                    },
+                                ) {
+                                    Text(text = "Execute", color = RedBrand)
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = {showDialog = false}) {
+                                    Text(text = "Close", color = Color.DarkGray)
+                                }
+                            },
+                            icon = { Icon(imageVector = Icons.Default.Info, contentDescription = null) }
+                        )
+                    }
                     Column(
                         modifier = Modifier
                             .padding(innerPadding)
@@ -127,8 +155,11 @@ class MainActivity : ComponentActivity() {
                                         .fillMaxWidth()
                                         .combinedClickable(
                                             onClick = { println("small click on $entry") },
-                                            onLongClick = { println("long click on $entry") },
-                                            onDoubleClick = { println("double click on $entry") }
+                                            onLongClick = {
+                                                showDialog = true
+                                                selectedEntry = entry.id
+                                                println("Selected $entry")
+                                            },
                                         )
                                         .then(
                                             if(!isFirstOrLastItem){
