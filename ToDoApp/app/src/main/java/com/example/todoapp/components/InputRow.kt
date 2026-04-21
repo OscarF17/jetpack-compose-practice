@@ -21,9 +21,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.todoapp.TodoItem
 import com.example.todoapp.ui.theme.RedBrand
-import kotlin.collections.set
 
 @Composable
 fun InputRow(

@@ -5,7 +5,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.todoapp.TodoItem
+import com.example.todoapp.data.local.entities.TodoItem
 
 @Composable
 fun EntryList(
-    todoItems: Map<Int, TodoItem>,
+    todoItems: List<TodoItem>,
     listState: androidx.compose.foundation.lazy.LazyListState,
     onSelectEntry: (Int) -> Unit,
     onRowLongClick: (Int) -> Unit,
@@ -30,19 +30,18 @@ fun EntryList(
             .fillMaxWidth()
     ) {
 
-        val sortedList = todoItems.toList().sortedBy { it.first}
-        items(items = sortedList, key = {it.first}) { (id, entry) ->
-            val isFirstOrLastItem = id == todoItems.size || id == 1
+        itemsIndexed(items = todoItems) { index, entry ->
+            val isFirstOrLastItem = entry.id == todoItems.size || entry.id == 1
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .combinedClickable(
                         onClick = {
-                            onSelectEntry(entry.id)
+                            onSelectEntry(index)
                             println("clicked") },
                         onLongClick = {
-                            onRowLongClick(entry.id)
+                            onRowLongClick(index)
                             println("Selected $entry")
                         },
                     )
@@ -55,9 +54,9 @@ fun EntryList(
                     )
             ) {
                 Checkbox(
-                    checked = todoItems[id]?.state ?: false,
+                    checked = todoItems[index].state,
                     onCheckedChange = {
-                        onSelectEntry(id)
+                        onSelectEntry(index)
                     },
                 )
                 Text(
