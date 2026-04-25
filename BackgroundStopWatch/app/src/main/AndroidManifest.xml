@@ -8,6 +8,7 @@
 
     <application
 
+        android:name=".BackgroundStopwatchApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BackgroundStopWatch">
         <service
-            android:name=".StopwatchService"
+            android:name=".service.StopwatchService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="specialUse">

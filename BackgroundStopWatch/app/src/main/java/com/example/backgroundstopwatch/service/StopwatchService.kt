@@ -1,10 +1,8 @@
-package com.example.backgroundstopwatch
+package com.example.backgroundstopwatch.service
 
 import android.app.Service
-import android.app.Service.START_STICKY
 import android.content.Intent
 import android.os.IBinder
-
 
 class StopwatchService: Service() {
     // This is not a "Bound" service, so we return null
